@@ -1,1 +1,5 @@
-console.log("Hello world!");
+import DiscordClient from "./client";
+
+if (require.main === module) {
+  DiscordClient.start();
+}
