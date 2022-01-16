@@ -2,7 +2,7 @@ import glob from "glob";
 import { resolve } from "path";
 import { BitFieldResolvable, IntentsString } from "discord.js";
 import { Client, IGuild } from "discordx";
-import { getEnv } from "../helpers";
+import { getEnv } from "~/helpers";
 
 // This array should contain all the intents that discord.js will use.
 // See more on https://discordjs.guide/popular-topics/intents.html
