@@ -9,9 +9,11 @@
     "start": "ts-node -r tsconfig-paths/register source/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "3.8.1",
     "discord.js": "^13.6.0",
     "discordx": "^9.1.10",
     "glob": "^7.2.0",
+    "prisma": "^3.8.1",
     "ts-node": "^10.4.0"
   },
   "devDependencies": {
