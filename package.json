@@ -1,8 +1,8 @@
 {
-  "name": "kovr",
+  "name": "hatsui",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/mauriciobraz/kovr.git",
+  "repository": "https://github.com/mauriciobraz/hatsui.git",
   "author": "Maurício Braz Gonçalves <82123955+mauriciobraz@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
