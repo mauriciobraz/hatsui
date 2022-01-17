@@ -22,12 +22,30 @@ export default class DiscordClient {
     const client = new Client({
       intents: Intents,
       botGuilds: [cachedGuildIDs],
+      simpleCommand: {
+        prefix: "h!",
+        responses: {
+          notFound: async (message) => {
+            await message.reply(
+              client.simpleCommands.map((c) => c.name).join(" | ")
+            );
+          },
+          unauthorized: async (message) => {
+            await message.message.reply("Permissões insuficientes.");
+          },
+        },
+      },
     });
 
     // Initialize all commands and their permissions.
     client.on("ready", async () => {
-      await client.initApplicationCommands();
-      await client.initApplicationPermissions();
+      await client.guilds.fetch();
+
+      await client.initApplicationCommands({
+        global: { log: true },
+        guild: { log: true },
+      });
+      await client.initApplicationPermissions(true);
     });
 
     // Import all files that are in commands folders.

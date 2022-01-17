@@ -11,6 +11,8 @@ export class CoreModule {
   @On("messageCreate")
   async onMessageCreate(args: ArgsOf<"messageCreate">, client: Client) {
     const [message] = args;
-    await client.executeCommand(message);
+    await client.executeCommand(message, {
+      log: true,
+    });
   }
 }

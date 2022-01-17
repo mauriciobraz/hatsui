@@ -10,8 +10,38 @@ datasource db {
   url      = "file:data/kovr.sqlite"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Config {
+  id String @id @unique
+
+  notesChannelID String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Member {
+  id String @id @unique
+
+  warnsReceived Punishment[]
+  warnsApplied  Punishment[] @relation("user-warns-applied")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Punishment {
+  id Int @id @unique @default(autoincrement())
+
+  type   String
+  reason String
+  proof  String?
+
+  belongsTo   Member @relation(fields: [belongsToID], references: [id])
+  belongsToID String @map("userId")
+
+  author   Member @relation("user-warns-applied", fields: [authorId], references: [id])
+  authorId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
