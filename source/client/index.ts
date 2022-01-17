@@ -23,17 +23,7 @@ export default class DiscordClient {
       intents: Intents,
       botGuilds: [cachedGuildIDs],
       simpleCommand: {
-        prefix: "h!",
-        responses: {
-          notFound: async (message) => {
-            await message.reply(
-              client.simpleCommands.map((c) => c.name).join(" | ")
-            );
-          },
-          unauthorized: async (message) => {
-            await message.message.reply("Permissões insuficientes.");
-          },
-        },
+        prefix: "!",
       },
     });
 
