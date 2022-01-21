@@ -33,6 +33,7 @@
       "@constants/*": ["source/constants/*"],
       "@guards/*": ["source/client/guards/*"],
       "@helpers/*": ["source/helpers/*"],
+      "@utils/*": ["source/utils/*"],
       "@errors": ["source/client/errors.ts"]
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

@@ -23,7 +23,7 @@ export default class DiscordClient {
       intents: Intents,
       botGuilds: [cachedGuildIDs],
       simpleCommand: {
-        prefix: "!",
+        prefix: ".",
       },
     });
 

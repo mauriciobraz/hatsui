@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:data/kovr.sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Config {
@@ -17,6 +17,24 @@ model Config {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Guild {
+  id String @id @unique
+
+  GuildLockdown GuildLockdown?
+}
+
+model GuildLockdown {
+  id String @id @unique @default(uuid())
+
+  guild   Guild  @relation(fields: [guildId], references: [id])
+  guildId String @unique
+
+  locked            Boolean  @default(false)
+  ignoreChannelsIds String[]
+  warnChannelId     String?
+  warnMessage       String?
 }
 
 model Member {
