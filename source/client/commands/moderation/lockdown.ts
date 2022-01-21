@@ -1,17 +1,15 @@
 import {
   CommandInteraction,
   Guild,
-  GuildBasedChannel,
   MessageOptions,
   MessagePayload,
   PermissionString,
-  Role,
 } from 'discord.js';
 import { Discord, Slash, SlashGroup } from 'discordx';
 
-import DiscordUtils from '@utils/discord';
-import { GenericUtils } from '~/utils/generic';
 import { PrismaSingleton } from '~/prisma';
+import DiscordUtils from '~/utils/discord';
+import { GenericUtils } from '~/utils/generic';
 
 // All permissions that grant access to the server.
 // See more on https://discordjs.guide/popular-topics/permissions.html

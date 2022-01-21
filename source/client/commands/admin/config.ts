@@ -1,47 +1,14 @@
-import {
-  Guild,
-  ApplicationCommandPermissions,
-  CommandInteraction,
-} from 'discord.js';
-import {
-  ApplicationCommandMixin,
-  Discord,
-  Permission,
-  SimpleCommandMessage,
-  Slash,
-  SlashGroup,
-  SlashOption,
-} from 'discordx';
+import { CommandInteraction } from 'discord.js';
+import { Discord, Guard, Slash, SlashGroup, SlashOption } from 'discordx';
 
-import DiscordUtils from '@utils/discord';
-import { GenericUtils } from '~/utils/generic';
 import { PrismaSingleton } from '~/prisma';
-import { getEnv } from '~/helpers';
+import DiscordUtils from '~/utils/discord';
 
-async function AdminPermissionResolver(
-  guild: Guild,
-  _command: ApplicationCommandMixin | SimpleCommandMessage
-): Promise<ApplicationCommandPermissions[]> {
-  const adminRoleID = getEnv('DISCORD_ADMIN_ROLES').split(',');
-
-  if (adminRoleID.length < 1)
-    throw new Error('You must pass at least one admin role.');
-
-  const guildRoles = adminRoleID
-    .map(rid => guild.roles.cache.get(rid))
-    .filter(GenericUtils.ensureNotNull);
-
-  return guildRoles.map(role => ({
-    permission: true,
-    type: 'ROLE',
-    id: role.id,
-  }));
-}
+import AuthorizationGuard from '../../guards/Authorization';
 
 @Discord()
 @SlashGroup('config')
-@Permission(false)
-@Permission(AdminPermissionResolver)
+@Guard(AuthorizationGuard('ADMINISTRATOR'))
 export class ConfigModule {
   @Slash('lockdown-message')
   async lockdownMessage(

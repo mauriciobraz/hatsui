@@ -1,16 +1,4 @@
 import {
-  ApplicationCommandParams,
-  Discord,
-  Guard,
-  SimpleCommand,
-  SimpleCommandMessage,
-  SimpleCommandOption,
-  SimpleCommandParams,
-  Slash,
-  SlashOption,
-  SlashOptionParams,
-} from 'discordx';
-import {
   CommandInteraction,
   Guild,
   GuildMember,
@@ -19,10 +7,21 @@ import {
   MessageEmbed,
   User,
 } from 'discord.js';
+import {
+  Discord,
+  Guard,
+  SimpleCommand,
+  SimpleCommandMessage,
+  SimpleCommandOption,
+  Slash,
+  SlashOption,
+} from 'discordx';
 
-import AuthorizationGuard from '@guards/Authorization';
-import { CannotSendDM, UserNotFound } from '@errors';
 import { PrismaSingleton } from '~/prisma';
+
+import { CannotSendDM, UserNotFound } from '../../errors';
+import AuthorizationGuard from '../../guards/Authorization';
+
 import { APPEAL_BTN_ID } from './appeal';
 
 const Texts = {

@@ -3,11 +3,12 @@ import {
   CommandInteraction,
   GuildMember,
   GuildMemberRoleManager,
-  User,
 } from 'discord.js';
 import { Discord, Guard, Slash, SlashOption } from 'discordx';
-import AuthorizationGuard from '~/client/guards/Authorization';
-import { sanitizeString } from '~/helpers/strings';
+
+import { normalize } from '~/helpers/strings';
+
+import AuthorizationGuard from '../../guards/Authorization';
 
 @Discord()
 @Guard(AuthorizationGuard('CHANGE_NICKNAME'))
@@ -41,7 +42,7 @@ export class DecancerModule {
       );
 
     const sanitizedNickname =
-      sanitizeString(member.nickname || member.user.username) || 'hatsui';
+      normalize(member.nickname || member.user.username) || 'hatsui';
 
     await member.setNickname(
       sanitizedNickname,
