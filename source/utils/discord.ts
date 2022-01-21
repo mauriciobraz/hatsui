@@ -1,4 +1,4 @@
-import { CommandInteraction, InteractionDeferReplyOptions } from "discord.js";
+import { CommandInteraction, InteractionDeferReplyOptions } from 'discord.js';
 
 export default class DiscordUtils {
   static async deferReplyIfNeeded(

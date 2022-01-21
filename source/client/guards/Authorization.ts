@@ -1,5 +1,5 @@
-import { CommandInteraction, Permissions, PermissionString } from "discord.js";
-import { GuardFunction } from "discordx";
+import { CommandInteraction, Permissions, PermissionString } from 'discord.js';
+import { GuardFunction } from 'discordx';
 
 /**
  * Checks if a user can use a command, if not, sends a message warning him about it.
@@ -20,7 +20,7 @@ export default function AuthorizationGuard(
         }));
 
       await interaction.editReply(
-        "Permissões insuficientes para executar este comando."
+        'Permissões insuficientes para executar este comando.'
       );
     }
   };

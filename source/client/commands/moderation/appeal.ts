@@ -1,7 +1,7 @@
-import { ButtonInteraction } from "discord.js";
-import { ButtonComponent, Discord } from "discordx";
+import { ButtonInteraction } from 'discord.js';
+import { ButtonComponent, Discord } from 'discordx';
 
-export const APPEAL_BTN_ID = "appeal-btn-id";
+export const APPEAL_BTN_ID = 'appeal-btn-id';
 
 @Discord()
 export class AppealModule {
@@ -12,6 +12,6 @@ export class AppealModule {
         ephemeral: true,
       });
 
-    await interaction.editReply("Função não implementada ainda.");
+    await interaction.editReply('Função não implementada ainda.');
   }
 }

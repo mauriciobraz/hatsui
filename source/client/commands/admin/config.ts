@@ -2,7 +2,7 @@ import {
   Guild,
   ApplicationCommandPermissions,
   CommandInteraction,
-} from "discord.js";
+} from 'discord.js';
 import {
   ApplicationCommandMixin,
   Discord,
@@ -11,41 +11,41 @@ import {
   Slash,
   SlashGroup,
   SlashOption,
-} from "discordx";
+} from 'discordx';
 
-import DiscordUtils from "@utils/discord";
-import { GenericUtils } from "~/utils/generic";
-import { PrismaSingleton } from "~/prisma";
-import { getEnv } from "~/helpers";
+import DiscordUtils from '@utils/discord';
+import { GenericUtils } from '~/utils/generic';
+import { PrismaSingleton } from '~/prisma';
+import { getEnv } from '~/helpers';
 
 async function AdminPermissionResolver(
   guild: Guild,
   _command: ApplicationCommandMixin | SimpleCommandMessage
 ): Promise<ApplicationCommandPermissions[]> {
-  const adminRoleID = getEnv("DISCORD_ADMIN_ROLES").split(",");
+  const adminRoleID = getEnv('DISCORD_ADMIN_ROLES').split(',');
 
   if (adminRoleID.length < 1)
-    throw new Error("You must pass at least one admin role.");
+    throw new Error('You must pass at least one admin role.');
 
   const guildRoles = adminRoleID
-    .map((rid) => guild.roles.cache.get(rid))
+    .map(rid => guild.roles.cache.get(rid))
     .filter(GenericUtils.ensureNotNull);
 
-  return guildRoles.map((role) => ({
+  return guildRoles.map(role => ({
     permission: true,
-    type: "ROLE",
+    type: 'ROLE',
     id: role.id,
   }));
 }
 
 @Discord()
-@SlashGroup("config")
+@SlashGroup('config')
 @Permission(false)
 @Permission(AdminPermissionResolver)
 export class ConfigModule {
-  @Slash("lockdown-message")
+  @Slash('lockdown-message')
   async lockdownMessage(
-    @SlashOption("message") message: string,
+    @SlashOption('message') message: string,
     interaction: CommandInteraction
   ) {
     if (!(interaction.guild && interaction.member)) return;
@@ -86,7 +86,7 @@ export class ConfigModule {
 
     await interaction.editReply(
       `Mensagem de aviso atualizado para: \`${
-        updatedGuildLockdown?.warnMessage || "padrão."
+        updatedGuildLockdown?.warnMessage || 'padrão.'
       }\``
     );
   }

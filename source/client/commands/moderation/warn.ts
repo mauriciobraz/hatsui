@@ -9,7 +9,7 @@ import {
   Slash,
   SlashOption,
   SlashOptionParams,
-} from "discordx";
+} from 'discordx';
 import {
   CommandInteraction,
   Guild,
@@ -18,24 +18,24 @@ import {
   MessageButton,
   MessageEmbed,
   User,
-} from "discord.js";
+} from 'discord.js';
 
-import AuthorizationGuard from "@guards/Authorization";
-import { CannotSendDM, UserNotFound } from "@errors";
-import { PrismaSingleton } from "~/prisma";
-import { APPEAL_BTN_ID } from "./appeal";
+import AuthorizationGuard from '@guards/Authorization';
+import { CannotSendDM, UserNotFound } from '@errors';
+import { PrismaSingleton } from '~/prisma';
+import { APPEAL_BTN_ID } from './appeal';
 
 const Texts = {
-  RootDescription: "Aplica um aviso a um usuário",
-  MemberParamDescription: "O membro que receberá esta punição",
+  RootDescription: 'Aplica um aviso a um usuário',
+  MemberParamDescription: 'O membro que receberá esta punição',
   ReasonParamDescription:
-    "A razão no qual o membro está recebendo esta punição.",
+    'A razão no qual o membro está recebendo esta punição.',
   ProofParamDescription:
-    "URL contendo algum dos seguintes tipos de mídia comprovando o ocorrido: vídeo, imagem e/ou áudio.",
+    'URL contendo algum dos seguintes tipos de mídia comprovando o ocorrido: vídeo, imagem e/ou áudio.',
 };
 
 @Discord()
-@Guard(AuthorizationGuard("VIEW_AUDIT_LOG"))
+@Guard(AuthorizationGuard('VIEW_AUDIT_LOG'))
 export class WarnModule {
   private _mediaURLRegex =
     /(http[s]*:\/\/)([a-z\-_0-9\/.]+)\.([a-z.]{2,3})\/([a-z0-9\-_\/._~:?#\[\]@!$&'()*+,;=%]*)([a-z0-9]+\.)(jpg|jpeg|png|mp4|mp3)/i;
@@ -43,26 +43,26 @@ export class WarnModule {
   // Embed that will be sent in the user's DM notifying him about the warn.
   private _notifyOnDMEmbed = (guild: Guild, reason: string, proof: string) =>
     new MessageEmbed()
-      .setColor("BLURPLE")
+      .setColor('BLURPLE')
       .setDescription(`Você recebeu um aviso: *${reason}*`)
       .setImage(proof)
       .setFooter({
         text: `${guild.name}・discord.gg/hatsui`,
-        iconURL: guild.iconURL() || "",
+        iconURL: guild.iconURL() || '',
       });
 
-  @Slash("warn", { description: Texts.RootDescription })
+  @Slash('warn', { description: Texts.RootDescription })
   async createWarnSlash(
-    @SlashOption("member", { description: Texts.MemberParamDescription })
+    @SlashOption('member', { description: Texts.MemberParamDescription })
     member: GuildMember,
 
-    @SlashOption("reason", { description: Texts.ReasonParamDescription })
+    @SlashOption('reason', { description: Texts.ReasonParamDescription })
     reason: string,
 
-    @SlashOption("proof", { description: Texts.ProofParamDescription })
+    @SlashOption('proof', { description: Texts.ProofParamDescription })
     proof: string,
 
-    interaction: CommandInteraction<"present">
+    interaction: CommandInteraction<'present'>
   ): Promise<void> {
     if (!(interaction.guild && interaction.member)) return;
     if (!interaction.deferred)
@@ -72,7 +72,7 @@ export class WarnModule {
 
     if (!this._mediaURLRegex.test(proof)) {
       await interaction.editReply(
-        "A prova precisa obrigatoriamente ser uma URL algum tipo de mídia (ex. imagem, vídeo ou áudio)."
+        'A prova precisa obrigatoriamente ser uma URL algum tipo de mídia (ex. imagem, vídeo ou áudio).'
       );
 
       return;
@@ -87,7 +87,7 @@ export class WarnModule {
 
     if (!warnSuccessfullyRegistered) {
       await interaction.editReply(
-        "Houve um erro na hora de registrar o warn, tente novamente, caso o erro persistir, entre em contato com o desenvolvedor."
+        'Houve um erro na hora de registrar o warn, tente novamente, caso o erro persistir, entre em contato com o desenvolvedor.'
       );
 
       return;
@@ -117,34 +117,34 @@ export class WarnModule {
     );
   }
 
-  @SimpleCommand("warn", {
-    aliases: ["avisar", "w"],
+  @SimpleCommand('warn', {
+    aliases: ['avisar', 'w'],
     description: Texts.RootDescription,
     directMessage: false,
-    argSplitter: ";",
+    argSplitter: ';',
   })
   async createWarnSimple(
-    @SimpleCommandOption("member", {
+    @SimpleCommandOption('member', {
       description: Texts.MemberParamDescription,
-      type: "USER",
+      type: 'USER',
     })
     member: GuildMember | undefined,
 
-    @SimpleCommandOption("reason", {
+    @SimpleCommandOption('reason', {
       description: Texts.ReasonParamDescription,
-      type: "STRING",
+      type: 'STRING',
     })
     reason: string | undefined,
 
-    @SimpleCommandOption("proof", {
+    @SimpleCommandOption('proof', {
       description: Texts.ProofParamDescription,
-      type: "STRING",
+      type: 'STRING',
     })
     proof: string | undefined,
 
     command: SimpleCommandMessage
   ) {
-    await command.message.reply("cooooooooooo");
+    await command.message.reply('cooooooooooo');
 
     if (!command.message.guild) return;
 
@@ -154,11 +154,11 @@ export class WarnModule {
       return;
     }
 
-    const message = await command.message.reply("...");
+    const message = await command.message.reply('...');
 
     if (!this._mediaURLRegex.test(proof)) {
       await message.edit(
-        "A prova precisa obrigatoriamente ser uma URL algum tipo de mídia (ex. imagem, vídeo ou áudio)."
+        'A prova precisa obrigatoriamente ser uma URL algum tipo de mídia (ex. imagem, vídeo ou áudio).'
       );
 
       return;
@@ -173,7 +173,7 @@ export class WarnModule {
 
     if (!warnSuccessfullyRegistered) {
       await message.edit(
-        "Houve um erro na hora de registrar o warn, tente novamente, caso o erro persistir, entre em contato com o desenvolvedor."
+        'Houve um erro na hora de registrar o warn, tente novamente, caso o erro persistir, entre em contato com o desenvolvedor.'
       );
 
       return;
@@ -228,7 +228,7 @@ export class WarnModule {
               where: { id: author.id },
             },
           },
-          type: "WARN",
+          type: 'WARN',
           reason,
           proof,
         },
@@ -246,10 +246,10 @@ export class WarnModule {
     embed: MessageEmbed
   ): Promise<UserNotFound | CannotSendDM> {
     const appealButton = new MessageButton()
-      .setStyle("SUCCESS")
+      .setStyle('SUCCESS')
       .setCustomId(APPEAL_BTN_ID)
-      .setLabel("Pedir revisão")
-      .setEmoji("👀");
+      .setLabel('Pedir revisão')
+      .setEmoji('👀');
 
     const actionRow = new MessageActionRow({
       components: [appealButton],

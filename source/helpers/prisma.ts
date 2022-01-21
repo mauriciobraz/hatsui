@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
-import { PrismaSingleton } from "~/prisma";
+import { PrismaSingleton } from '~/prisma';
 
 export async function upsertGuild(guildId: string, select: Prisma.GuildSelect) {
   const guild = await PrismaSingleton.guild.upsert({

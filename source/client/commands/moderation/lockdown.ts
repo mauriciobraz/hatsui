@@ -6,27 +6,27 @@ import {
   MessagePayload,
   PermissionString,
   Role,
-} from "discord.js";
-import { Discord, Slash, SlashGroup } from "discordx";
+} from 'discord.js';
+import { Discord, Slash, SlashGroup } from 'discordx';
 
-import DiscordUtils from "@utils/discord";
-import { GenericUtils } from "~/utils/generic";
-import { PrismaSingleton } from "~/prisma";
+import DiscordUtils from '@utils/discord';
+import { GenericUtils } from '~/utils/generic';
+import { PrismaSingleton } from '~/prisma';
 
 // All permissions that grant access to the server.
 // See more on https://discordjs.guide/popular-topics/permissions.html
 const GUILD_ACCESS_PERMISSIONS: PermissionString[] = [
-  "SEND_MESSAGES",
-  "READ_MESSAGE_HISTORY",
-  "VIEW_CHANNEL",
+  'SEND_MESSAGES',
+  'READ_MESSAGE_HISTORY',
+  'VIEW_CHANNEL',
 ];
 
 @Discord()
-@SlashGroup("lockdown", {
-  description: "Ativa ou desativa o lockdown do servidor.",
+@SlashGroup('lockdown', {
+  description: 'Ativa ou desativa o lockdown do servidor.',
 })
 export class LockdownModule {
-  @Slash("enable", { description: "Ativa o lockdown do servidor." })
+  @Slash('enable', { description: 'Ativa o lockdown do servidor.' })
   async activateLockdown(interaction: CommandInteraction) {
     if (!(interaction.guild && interaction.member)) return;
     await DiscordUtils.deferReplyIfNeeded(interaction);
@@ -35,7 +35,7 @@ export class LockdownModule {
 
     if (guildLockdown.locked)
       return await interaction.editReply(
-        "O servidor já está em quarentena, talvez você queira desativar? Use `/lockdown off`."
+        'O servidor já está em quarentena, talvez você queira desativar? Use `/lockdown off`.'
       );
 
     const lockedChannelsIds = await this._toggleLockdownGuildMode(
@@ -43,7 +43,7 @@ export class LockdownModule {
       false
     );
 
-    const defaultWarnMessage = "O servidor está em quarentena.";
+    const defaultWarnMessage = 'O servidor está em quarentena.';
     const warnMessageFromDatabase =
       guildLockdown.warnMessage || defaultWarnMessage;
 
@@ -66,7 +66,7 @@ export class LockdownModule {
     );
   }
 
-  @Slash("disable", { description: "Desativa o lockdown do servidor." })
+  @Slash('disable', { description: 'Desativa o lockdown do servidor.' })
   async disableLockdown(interaction: CommandInteraction) {
     if (!(interaction.guild && interaction.member)) return;
     await DiscordUtils.deferReplyIfNeeded(interaction);
@@ -75,11 +75,11 @@ export class LockdownModule {
 
     if (!guildLockdown.locked)
       return await interaction.editReply(
-        "O servidor não está em quarentena. Talvez você queira ativar, se sim, use `/lockdown on`."
+        'O servidor não está em quarentena. Talvez você queira ativar, se sim, use `/lockdown on`.'
       );
 
     await interaction.guild.channels.cache
-      .find((c) => c.id === guildLockdown.warnChannelId)
+      .find(c => c.id === guildLockdown.warnChannelId)
       ?.delete();
 
     const unlockedChannelsIds = await this._toggleLockdownGuildMode(
@@ -130,13 +130,13 @@ export class LockdownModule {
 
     await everyoneRole.setPermissions(
       newEveryoneRolePermissions,
-      "Server lockdown toggled."
+      'Server lockdown toggled.'
     );
 
     // Clear all permissions on channels that grant @everyone access to them.
     const clearedChannles = await Promise.all(
       guild.channels.cache
-        .filter((channel) => {
+        .filter(channel => {
           if (channel.isThread()) return false;
 
           const channelPermissions = channel.permissionOverwrites.cache.get(
@@ -144,16 +144,16 @@ export class LockdownModule {
           );
 
           return channelPermissions
-            ? channelPermissions.allow.has("VIEW_CHANNEL")
+            ? channelPermissions.allow.has('VIEW_CHANNEL')
             : false;
         })
-        .map((channel) => {
+        .map(channel => {
           if (channel.isThread()) return;
 
           channel.permissionOverwrites.edit(
             everyoneRole,
             { VIEW_CHANNEL: switcher },
-            { reason: "Server lockdown toggled." }
+            { reason: 'Server lockdown toggled.' }
           );
 
           return channel;
@@ -161,7 +161,7 @@ export class LockdownModule {
         .filter(GenericUtils.ensureNotNull)
     );
 
-    return clearedChannles.map((channel) => channel.id);
+    return clearedChannles.map(channel => channel.id);
   }
 
   /**
@@ -174,12 +174,12 @@ export class LockdownModule {
   ) {
     if (!interaction.guild) return;
 
-    const channel = await interaction.guild.channels.create("lockdown", {
+    const channel = await interaction.guild.channels.create('lockdown', {
       permissionOverwrites: [
         {
-          type: "role",
+          type: 'role',
           id: interaction.guild.roles.everyone.id,
-          allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
+          allow: ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'],
         },
       ],
     });

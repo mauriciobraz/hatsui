@@ -1,20 +1,20 @@
-import { APIInteractionGuildMember } from "discord-api-types";
+import { APIInteractionGuildMember } from 'discord-api-types';
 import {
   CommandInteraction,
   GuildMember,
   GuildMemberRoleManager,
   User,
-} from "discord.js";
-import { Discord, Guard, Slash, SlashOption } from "discordx";
-import AuthorizationGuard from "~/client/guards/Authorization";
-import { sanitizeString } from "~/helpers/strings";
+} from 'discord.js';
+import { Discord, Guard, Slash, SlashOption } from 'discordx';
+import AuthorizationGuard from '~/client/guards/Authorization';
+import { sanitizeString } from '~/helpers/strings';
 
 @Discord()
-@Guard(AuthorizationGuard("CHANGE_NICKNAME"))
+@Guard(AuthorizationGuard('CHANGE_NICKNAME'))
 export class DecancerModule {
-  @Slash("decancer")
+  @Slash('decancer')
   async cleanNameSlash(
-    @SlashOption("member") member: GuildMember,
+    @SlashOption('member') member: GuildMember,
     interaction: CommandInteraction
   ) {
     if (!(interaction.guild && interaction.member)) return;
@@ -25,23 +25,23 @@ export class DecancerModule {
 
     if (!this._hasGreaterRolePosition(interaction.member, member))
       return await interaction.editReply(
-        "Você não possui permissões suficientes para usar este comando em cima deste usuário."
+        'Você não possui permissões suficientes para usar este comando em cima deste usuário.'
       );
 
     const clientMember = interaction.guild.members.cache.get(
-      interaction.client.user?.id || ""
+      interaction.client.user?.id || ''
     );
 
     if (!clientMember)
-      return await interaction.editReply("Houve um erro inesperado");
+      return await interaction.editReply('Houve um erro inesperado');
 
     if (!this._hasGreaterRolePosition(clientMember, member))
       return await interaction.editReply(
-        "Eu não possuo permissões suficientes para alterar o apelido deste usuário."
+        'Eu não possuo permissões suficientes para alterar o apelido deste usuário.'
       );
 
     const sanitizedNickname =
-      sanitizeString(member.nickname || member.user.username) || "hatsui";
+      sanitizeString(member.nickname || member.user.username) || 'hatsui';
 
     await member.setNickname(
       sanitizedNickname,
@@ -65,6 +65,6 @@ export class DecancerModule {
   ) {
     if (author.roles instanceof GuildMemberRoleManager)
       return author.roles.highest.comparePositionTo(member.roles.highest) > 1;
-    else return new Error("Not supported");
+    else return new Error('Not supported');
   }
 }

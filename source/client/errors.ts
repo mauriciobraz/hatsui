@@ -3,8 +3,9 @@ export class UserNotFound extends Error {
     super(`User not found`);
   }
 }
+
 export class CannotSendDM extends Error {
   constructor() {
-    super("Cannot send DM.");
+    super('Cannot send DM.');
   }
 }
